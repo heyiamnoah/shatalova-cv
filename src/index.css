@@ -484,6 +484,10 @@ body.menu-open {
 }
 
 .initiative-grid {
+  align-items: start;
+}
+
+.initiative-grid--equal {
   align-items: stretch;
 }
 
@@ -517,6 +521,47 @@ body.menu-open {
   height: auto;
   margin-bottom: 0;
   vertical-align: bottom;
+}
+
+.cv-download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  min-height: var(--touch-min);
+  padding: 0.65rem 1.2rem;
+  font-family: inherit;
+  font-size: var(--text-ui);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-ui);
+  color: var(--electric);
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 9999px;
+  box-shadow: var(--card-shadow);
+  transition:
+    box-shadow 0.35s ease,
+    border-color 0.35s ease,
+    transform 0.25s ease,
+    opacity 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cv-download-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(26, 110, 255, 0.25);
+    box-shadow: var(--card-active-shadow);
+  }
+}
+
+.cv-download-btn:active {
+  transform: translateY(0);
+  opacity: 0.85;
 }
 
 .lang-btn {

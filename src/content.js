@@ -20,6 +20,8 @@ export const content = {
       phoneLabel: "Phone:",
       phone: "+792199992080",
       phoneHref: "tel:+792199992080",
+      downloadLabel: "Download CV",
+      cvFile: "cv-en.pdf",
     },
     about: {
       label: "About",
@@ -225,6 +227,8 @@ export const content = {
       phoneLabel: "Phone:",
       phone: "+79219992080",
       phoneHref: "tel:+79219992080",
+      downloadLabel: "Скачать резюме",
+      cvFile: "cv-ru.pdf",
     },
     about: {
       label: "Обо мне",

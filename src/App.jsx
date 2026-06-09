@@ -241,7 +241,7 @@ function Portrait({ enableParallax, alt }) {
         }
       >
         <img
-          src="/portrait.png"
+          src={`${import.meta.env.BASE_URL}portrait.png`}
           alt={alt}
           className="portrait-photo max-h-[260px] sm:max-h-[320px] lg:max-h-[400px] w-auto object-contain object-bottom"
           style={
@@ -351,16 +351,27 @@ function ExperienceAccordion({ areas }) {
   );
 }
 
-function ProjectCard({ title, summary, details, isOpen, onToggle, labels, className = "" }) {
+function ProjectCard({
+  title,
+  summary,
+  details,
+  isOpen,
+  onToggle,
+  labels,
+  equalHeight = false,
+  className = "",
+}) {
   return (
     <motion.article
       variants={fadeUp}
-      className={`initiative-card glass-card rounded-2xl p-5 sm:p-6 md:p-7 w-full h-full ${isOpen ? "glass-card-active" : ""} ${className}`}
+      className={`initiative-card glass-card rounded-2xl p-5 sm:p-6 md:p-7 w-full ${equalHeight ? "h-full" : "self-start"} ${isOpen ? "glass-card-active" : ""} ${className}`}
     >
       <h3 className="type-heading-md leading-snug min-h-[2.6em]">
         {title}
       </h3>
-      <p className="mt-3 type-body-sm leading-relaxed flex-1">
+      <p
+        className={`mt-3 type-body-sm leading-relaxed${equalHeight ? " flex-1" : ""}`}
+      >
         {summary}
       </p>
       <button
@@ -399,7 +410,12 @@ function ProjectCard({ title, summary, details, isOpen, onToggle, labels, classN
 }
 
 function InitiativesGrid({ items, labels }) {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openId, setOpenId] = useState(null);
+  const noneOpen = openId === null;
+
+  useEffect(() => {
+    setOpenId(null);
+  }, [items]);
 
   return (
     <motion.div
@@ -407,15 +423,18 @@ function InitiativesGrid({ items, labels }) {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-4%" }}
-      className="initiative-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      className={`initiative-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4${noneOpen ? " initiative-grid--equal" : ""}`}
     >
-      {items.map((item, index) => (
+      {items.map((item) => (
         <ProjectCard
           key={item.title}
           {...item}
           labels={labels}
-          isOpen={openIndex === index}
-          onToggle={() => setOpenIndex((prev) => (prev === index ? null : index))}
+          equalHeight={noneOpen}
+          isOpen={openId === item.title}
+          onToggle={() =>
+            setOpenId((prev) => (prev === item.title ? null : item.title))
+          }
         />
       ))}
     </motion.div>
@@ -500,6 +519,46 @@ function InfoCard({ label, children }) {
   );
 }
 
+function DownloadIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d="M8 2.5v7M8 9.5l2.25-2.25M8 9.5 5.75 7.25"
+        stroke="currentColor"
+        strokeWidth="1.35"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M3.5 11.5h9"
+        stroke="currentColor"
+        strokeWidth="1.35"
+        strokeLinecap="round"
+      />
+      <path
+        d="M4.5 13.5h7"
+        stroke="currentColor"
+        strokeWidth="1.35"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function CvDownloadButton({ label, file }) {
+  return (
+    <a
+      href={`${import.meta.env.BASE_URL}${file}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="cv-download-btn"
+    >
+      <DownloadIcon />
+      {label}
+    </a>
+  );
+}
+
 function HeroContacts({ hero }) {
   return (
     <div className="mt-6 sm:mt-8 space-y-2">
@@ -532,6 +591,7 @@ function HeroContacts({ hero }) {
           {hero.phone}
         </a>
       </p>
+      <CvDownloadButton label={hero.downloadLabel} file={hero.cvFile} />
     </div>
   );
 }
